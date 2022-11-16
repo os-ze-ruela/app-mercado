@@ -10,7 +10,7 @@ import BtBarcode from './components/BtBarcode';
 import Market from './Market';
 
 
-const StaticMarketImage = "https://img.freepik.com/vetores-premium/logotipo-do-supermercado_23-2148459011.jpg?w=2000"
+const StaticMarketImage = "https://cdn.freebiesupply.com/logos/thumbs/2x/the-fresh-market-logo.png"
 
 const markets= [
 {name:"Mercado 1", location: "Birigui", image:StaticMarketImage},
@@ -103,20 +103,27 @@ export default function App() {
   return (
     <NavigationContainer>
       <Tab.Navigator>
-        <Tab.Screen name="Principal" component={HomeScreen} options={{
-          tabBarIcon: ({size,color}) => (
-            <Ionicons name="ios-home" size={size} color={color}/>
+        <Tab.Screen name="Escolha seu Mercado" component={HomeScreen} options={{
+          tabBarIcon: ({size,color,focused}) => (
+            <Ionicons name="ios-home" size={size} color={focused ? '#53E88B' : color }/>
+          ),       
+          tabBarLabel: ({focused, color}) => (
+            <Text style={{color: focused ? '#53E88B' : color}}>Mercados</Text>
           )
         }} />
         <Tab.Screen name="Camera" component={Cam} options={{
           tabBarLabel:'',
           tabBarIcon: ({size,color}) => (
             <BtBarcode size={35} color={color}/>
-          )
+          ),
+  
         }} />
         <Tab.Screen name="Perfil" component={Tela2} options={{
-          tabBarIcon: ({size,color}) => (
-            <Ionicons name="ios-person" size={size} color={color}/>
+          tabBarIcon: ({size,color,focused}) => (
+            <Ionicons name="ios-person" size={size} color={focused ? '#53E88B' : color }/>
+          ),
+          tabBarLabel: ({focused, color}) => (
+            <Text style={{color: focused ? '#53E88B' : color}}>Perfil</Text>
           )
         }}  />
       </Tab.Navigator>

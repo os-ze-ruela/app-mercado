@@ -9,10 +9,10 @@ class Market extends React.Component{
             <TouchableOpacity
               style={styles.button}
               onPress={()=>{
-                console.log('Clicou');
+                console.log(name);
               }}
               >
-            <View style={{width: '49%', alignItems: 'center', borderWidth: 0.7, marginHorizontal: '1%' }}>
+            <View style={{width: '49%', alignItems: 'center', marginHorizontal: '1%'}}>
                 <Image style= {{width:150, height: 150}} source={{uri: image}}/>
                 <Text style={{textAlign: 'center', fontWeight: 'bold'}}>{name}</Text>
                 <Text>{location}</Text>
@@ -28,8 +28,13 @@ const styles = StyleSheet.create({
     button: {
         alignItems: 'center',
         justifyContent: 'center',
-        borderWidth: 0.5,
         margin: 15,
+        borderRadius: 10,
+        backgroundColor: 'white',
+        shadowColor: '#171717',
+        shadowOffset: {width:-2, height:6},
+        shadowOpacity:0.2,
+        shadowRadius: 3,
         
       },
 })
