@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity, Modal, Image } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity, Modal, Image, FlatList } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons'
@@ -7,18 +7,40 @@ import {FontAwesome} from "@expo/vector-icons";
 import { StatusBar } from 'expo-status-bar';
 import { Camera, CameraType } from 'expo-camera';
 import BtBarcode from './components/BtBarcode';
+import Market from './Market';
 
+
+const StaticMarketImage = "https://img.freepik.com/vetores-premium/logotipo-do-supermercado_23-2148459011.jpg?w=2000"
+
+const markets= [
+{name:"Mercado 1", location: "Birigui", image:StaticMarketImage},
+{name:"Mercado 2", location: "Birigui", image:StaticMarketImage},
+{name:"Mercado 3", location: "Birigui", image:StaticMarketImage},
+{name:"Mercado 4", location: "Birigui", image:StaticMarketImage},
+{name:"Mercado 5", location: "Birigui", image:StaticMarketImage},
+{name:"Mercado 6", location: "Birigui", image:StaticMarketImage},
+{name:"Mercado 7", location: "Birigui", image:StaticMarketImage},
+{name:"Mercado 8", location: "Birigui", image:StaticMarketImage},
+{name:"Mercado 9", location: "Birigui", image:StaticMarketImage},
+{name:"Mercado 10", location: "Birigui", image:StaticMarketImage},
+];
 
 
 function HomeScreen() {
   return (
     <View style={styles.container}>
-      <Text>Tela Principal</Text>
+      <SafeAreaView>
+        <FlatList data={markets}
+          numColumns={2}
+          keyExtractor={(item,index)=> index.toString()}
+          renderItem={({item})=> (<Market market={item}/>)}>
+        </FlatList>
+      </SafeAreaView>
     </View>
   )
 }
 
-function Tela2() {
+export function Tela2() {
   return(
     <View style={styles.container2}>
       <Text>Perfil</Text>
@@ -105,7 +127,6 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#abc',
     alignItems: 'center',
     justifyContent: 'center',
   },
