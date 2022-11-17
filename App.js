@@ -1,44 +1,20 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity, Modal, Image, FlatList } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import {FontAwesome} from "@expo/vector-icons";
 import { StatusBar } from 'expo-status-bar';
 import { Camera, CameraType } from 'expo-camera';
 import BtBarcode from './components/BtBarcode';
-import Market from './Market';
+import Home from './pages/Home';
+import Cam from './pages/Cam'
+import {NavigationCam, NavigationHome, NavigationProfile} from './Navigation';
 
+const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
 
-const StaticMarketImage = "https://cdn.freebiesupply.com/logos/thumbs/2x/the-fresh-market-logo.png"
-
-const markets= [
-{name:"Mercado 1", location: "Birigui", image:StaticMarketImage},
-{name:"Mercado 2", location: "Birigui", image:StaticMarketImage},
-{name:"Mercado 3", location: "Birigui", image:StaticMarketImage},
-{name:"Mercado 4", location: "Birigui", image:StaticMarketImage},
-{name:"Mercado 5", location: "Birigui", image:StaticMarketImage},
-{name:"Mercado 6", location: "Birigui", image:StaticMarketImage},
-{name:"Mercado 7", location: "Birigui", image:StaticMarketImage},
-{name:"Mercado 8", location: "Birigui", image:StaticMarketImage},
-{name:"Mercado 9", location: "Birigui", image:StaticMarketImage},
-{name:"Mercado 10", location: "Birigui", image:StaticMarketImage},
-];
-
-
-function HomeScreen() {
-  return (
-    <View style={styles.container}>
-      <SafeAreaView>
-        <FlatList data={markets}
-          numColumns={2}
-          keyExtractor={(item,index)=> index.toString()}
-          renderItem={({item})=> (<Market market={item}/>)}>
-        </FlatList>
-      </SafeAreaView>
-    </View>
-  )
-}
 
 export function Tela2() {
   return(
@@ -48,62 +24,13 @@ export function Tela2() {
   )
 }
 
-function Cam() {
 
-  const camRef = useRef(null)
-  const [type,setType] = useState(CameraType.back)
-  const [hasPermission,setHasPermission] = useState(null)
-  const [foto, setFoto] = useState(null)
-  const [open,setOpen] = useState(false)
-
-  useEffect ( () => {
-    (async ()=> {
-      const {status} = await Camera.requestCameraPermissionsAsync()
-      setHasPermission(status === "granted");  
-      }) ();
-  }, [])
-
-  if(hasPermission === null){
-    return <View/>
-  }
-
-  if(hasPermission === false){
-    return <Text>Acesso Negado!</Text>
-  }
-
-  return (
-    <SafeAreaView style={styles.container}>
-      <Camera
-        style={styles.camera}
-        type={type}
-        >
-          <View style={styles.contentButtons}>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={()=>{
-                setType(type === CameraType.back
-                  ? CameraType.front
-                  : CameraType.back
-                  )
-              }}
-              >
-                <FontAwesome name="bullseye" size={23} color="red"></FontAwesome>
-              </TouchableOpacity>
-              
-          </View>
-        </Camera>
-
-    </SafeAreaView>
-  );
-}
-
-const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Tab.Navigator>
-        <Tab.Screen name="Escolha seu Mercado" component={HomeScreen} options={{
+      <Tab.Navigator screenOptions={{headerShown: false}}>
+        <Tab.Screen name="Escolha seu mercado" component={NavigationHome} options={{
           tabBarIcon: ({size,color,focused}) => (
             <Ionicons name="ios-home" size={size} color={focused ? '#53E88B' : color }/>
           ),       
@@ -111,14 +38,14 @@ export default function App() {
             <Text style={{color: focused ? '#53E88B' : color}}>Mercados</Text>
           )
         }} />
-        <Tab.Screen name="Camera" component={Cam} options={{
+        <Tab.Screen name="Leitor Código de Barras" component={NavigationCam} options={{
           tabBarLabel:'',
           tabBarIcon: ({size,color}) => (
             <BtBarcode size={35} color={color}/>
           ),
   
         }} />
-        <Tab.Screen name="Perfil" component={Tela2} options={{
+        <Tab.Screen name="Perfil" component={NavigationProfile} options={{
           tabBarIcon: ({size,color,focused}) => (
             <Ionicons name="ios-person" size={size} color={focused ? '#53E88B' : color }/>
           ),
@@ -127,7 +54,7 @@ export default function App() {
           )
         }}  />
       </Tab.Navigator>
-    </NavigationContainer>
+      </NavigationContainer>
   );
 }
 

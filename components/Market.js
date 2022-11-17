@@ -1,16 +1,16 @@
 import React from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
-import App from "./App";
+
 
 class Market extends React.Component{
     render(){
         const {name, location, image} = this.props.market
+        const navigation = this.props.navigation
         return(
             <TouchableOpacity
               style={styles.button}
-              onPress={()=>{
-                console.log(name);
-              }}
+              onPress={()=> navigation.navigate('Produtos', {name: name})
+              }
               >
             <View style={{width: '49%', alignItems: 'center', marginHorizontal: '1%'}}>
                 <Image style= {{width:150, height: 150}} source={{uri: image}}/>
