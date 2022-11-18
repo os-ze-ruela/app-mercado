@@ -30,7 +30,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Tab.Navigator screenOptions={{headerShown: false}}>
-        <Tab.Screen name="Escolha seu mercado" component={NavigationHome} options={{
+        <Tab.Screen name="Home" component={NavigationHome} options={{
           tabBarIcon: ({size,color,focused}) => (
             <Ionicons name="ios-home" size={size} color={focused ? '#53E88B' : color }/>
           ),       
@@ -38,14 +38,14 @@ export default function App() {
             <Text style={{color: focused ? '#53E88B' : color}}>Mercados</Text>
           )
         }} />
-        <Tab.Screen name="Leitor Código de Barras" component={NavigationCam} options={{
+        <Tab.Screen name="Cam" component={NavigationCam} options={{
           tabBarLabel:'',
           tabBarIcon: ({size,color}) => (
             <BtBarcode size={35} color={color}/>
           ),
   
         }} />
-        <Tab.Screen name="Perfil" component={NavigationProfile} options={{
+        <Tab.Screen name="Profile" component={NavigationProfile} options={{
           tabBarIcon: ({size,color,focused}) => (
             <Ionicons name="ios-person" size={size} color={focused ? '#53E88B' : color }/>
           ),

@@ -26,6 +26,7 @@ function Products({}) {
             keyExtractor={(item,index)=> index.toString()}
             renderItem={({item})=> (<Product product={item}/>)}>
           </FlatList>
+          <Button>Histórico</Button>
         </SafeAreaView>
       </View>
   )

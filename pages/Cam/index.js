@@ -1,95 +1,78 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity, Modal, Image, FlatList } from 'react-native';
-import {FontAwesome} from "@expo/vector-icons";
-import { Camera, CameraType } from 'expo-camera';
-
+import React, { useState, useEffect } from 'react';
+import { Text, View, StyleSheet, Button } from 'react-native';
+import { BarCodeScanner } from 'expo-barcode-scanner';
+import BarcodeMask from 'react-native-barcode-mask';
 
 
 export default function Cam() {
+  const [hasPermission, setHasPermission] = useState(null);
+  const [scanned, setScanned] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  useEffect(() => {
+    const getBarCodeScannerPermissions = async () => {
+      const { status } = await BarCodeScanner.requestPermissionsAsync();
+      setHasPermission(status === 'granted');
+    };
 
-    const camRef = useRef(null)
-    const [type,setType] = useState(CameraType.back)
-    const [hasPermission,setHasPermission] = useState(null)
-    const [foto, setFoto] = useState(null)
-    const [open,setOpen] = useState(false)
-  
-    useEffect ( () => {
-      (async ()=> {
-        const {status} = await Camera.requestCameraPermissionsAsync()
-        setHasPermission(status === "granted");  
-        }) ();
-    }, [])
-  
-    if(hasPermission === null){
-      return <View/>
-    }
-  
-    if(hasPermission === false){
-      return <Text>Acesso Negado!</Text>
-    }
-  
-    return (
-      <SafeAreaView style={styles.container}>
-        <Camera
-          style={styles.camera}
-          type={type}
-          >
-            <View style={styles.contentButtons}>
-              <TouchableOpacity
-                style={styles.button}
-                onPress={()=>{
-                  setType(type === CameraType.back
-                    ? CameraType.front
-                    : CameraType.back
-                    )
-                }}
-                >
-                  <FontAwesome name="bullseye" size={23} color="red"></FontAwesome>
-                </TouchableOpacity>
-                
-            </View>
-          </Camera>
-  
-      </SafeAreaView>
-    );
+    getBarCodeScannerPermissions();
+  }, []);
+
+  const handleBarCodeScanned = ({ type, data }) => {
+    setScanned(true);
+    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+  };
+
+  if (hasPermission === null) {
+    return <Text>Requesting for camera permission</Text>;
+  }
+  if (hasPermission === false) {
+    return <Text>No access to camera</Text>;
   }
 
-
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    container2: {
-      flex: 1,
-      backgroundColor: '#aba',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    camera: {
-      width: "100%",
-      height: "100%",
-    },
-    button: {
-      alignItems: 'flex-start',
-      margin: 35,
-    },
-    contentModal: {
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "flex-end",
-      margin: 20,
-    },
-    closeButton: {
-      position: "absolute",
-      top: 10,
-      left: 2,
-      margin: 10,
-    },
-    imgPhoto: {
-      width: "100%",
-      height: 400,
-    },  
-  });
+  return (
+    
+    <View style={styles.outsideContainer}>
+      <BarCodeScanner
+        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+        style={StyleSheet.absoluteFillObject}
+      />
+      <BarcodeMask edgeColor={'#53E88B'} width={300} height={100}/>
+      {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)}/>}
+    </View>
   
+  );
+}
+
+const styles = StyleSheet.create({
+  outsideContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+
+  },
+  barCodeBox: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    height:150,
+    width: 300,
+    overflow: 'hidden',
+    borderWidth: 5,
+    borderRadius:30,
+    borderColor:'red',
+
+  },
+  buttonScan: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor:'#53E88B',
+    borderRadius:30,
+    color:'white'
+
+  },
+  
+});

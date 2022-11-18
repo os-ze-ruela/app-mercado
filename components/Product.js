@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { Button } from "react-native-web";
 
 class Product extends React.Component{
     render(){
@@ -10,11 +11,13 @@ class Product extends React.Component{
               style={styles.button}
 
               >
-            <View style={{width: '100%', marginHorizontal: '50%'}}>
+            <View style={{width: '100%', marginHorizontal: '50%', flexDirection:'row'}}>
                 <Image style= {{width:150, height: 150, alignItems:'left'}} source={{uri: image}}/>
-                <Text style={{textAlign: 'center', fontWeight: 'bold'}}>{name}</Text>
+                <View style={{textAlign: 'center'}}>
+                <Text style={{fontWeight: 'bold'}}>{name}</Text>
                 <Text>{brand}</Text>
                 <Text>{barCode}</Text>
+                </View>
             </View>
             </TouchableOpacity>
         )
