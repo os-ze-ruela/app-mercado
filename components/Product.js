@@ -1,22 +1,22 @@
 import React from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
-import { Button } from "react-native-web";
+
 
 class Product extends React.Component{
     render(){
-        const {name, brand, barCode, image} = this.props.product
-
+        const {id, nome, marca, barcode, imagem} = this.props.product
+        console.log("nome = " + nome)
         return(
             <TouchableOpacity
               style={styles.button}
 
               >
             <View style={{width: '100%', marginHorizontal: '50%', flexDirection:'row'}}>
-                <Image style= {{width:150, height: 150, alignItems:'left'}} source={{uri: image}}/>
+                <Image style= {{width:150, height: 150, alignItems:'left'}} source={{uri: imagem}}/>
                 <View style={{textAlign: 'center'}}>
-                <Text style={{fontWeight: 'bold'}}>{name}</Text>
-                <Text>{brand}</Text>
-                <Text>{barCode}</Text>
+                <Text style={{fontWeight: 'bold'}}>{nome}</Text>
+                <Text>{marca}</Text>
+                <Text>{barcode}</Text>
                 </View>
             </View>
             </TouchableOpacity>
