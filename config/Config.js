@@ -123,7 +123,9 @@ async function FetchAllMarketProductsByMarketID(id_Market) {
                     query: `
                     query ProdutosMercadoID($idMarket: ItemId) {
                         allMercadoProdutos(filter: { idMercado: { eq: $idMarket } }) {
-                          idProduto{id}
+                          idProduto{
+                                id nome marca barcode imagem
+                            }
                         }
                       }           
                         `,
