@@ -12,10 +12,10 @@ class Market extends React.Component {
                 onPress={async () => {
                     var products = await FetchAllMarketProductsByMarketID(id)
                     console.log(JSON.stringify(products))
-                    navigation.navigate('Produtos', { products:  products, name:name, image:image})
+                    navigation.navigate('Produtos', { products:  products, name:name})
                 }}
             >
-                <View style={{ width: '60%', alignItems: 'center', marginHorizontal: '1%' }}>
+                <View style={{ width: '49%', alignItems: 'center', marginHorizontal: '1%' }}>
                     <Image style={{ width: 150, height: 150 }} source={{ uri: image }} />
                     <Text style={{ textAlign: 'center', fontWeight: 'bold' }}>{name}</Text>
                     <Text>{location}</Text>

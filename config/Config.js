@@ -1,7 +1,7 @@
 import React from "react"
 
 async function FetchAllMarkets() {
-    const token = 'da4791d5b3fb6febd5687b6ccca5ad';
+    const token = 'token';
     try {
         const res = await fetch(
             'https://graphql.datocms.com/',
@@ -30,7 +30,7 @@ async function FetchAllMarkets() {
 }
 async function FetchProductsByID(id_Product) {
     console.log("id produto = " + id_Product)
-    const token = 'da4791d5b3fb6febd5687b6ccca5ad';
+    const token = 'token';
     try {
         const res = await fetch(
             'https://graphql.datocms.com/',
@@ -108,7 +108,7 @@ async function FetchAllMarketProductsByMarketID(id_Market) {
 */
 
 async function FetchAllMarketProductsByMarketID(id_Market) {
-    const token = 'da4791d5b3fb6febd5687b6ccca5ad';
+    const token = 'token';
     try {
         const res = await fetch(
             'https://graphql.datocms.com/',
