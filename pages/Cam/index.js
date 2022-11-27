@@ -3,11 +3,17 @@ import { Text, View, StyleSheet, Button, Modal, Pressable, Image} from 'react-na
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import BarcodeMask from 'react-native-barcode-mask';
 import { IconButton, Colors } from 'react-native-paper';
+import { FetchProductsByBarcode } from '../../config/Config';
 
 export default function Cam() {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
+  const [modal1Visible, setmodal1Visible] = useState(false);
+  const [modal2Visible, setmodal2Visible] = useState(false);
+  const test = false
+  
+  const [products, setProducts] = useState([])
+
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
@@ -17,9 +23,25 @@ export default function Cam() {
     getBarCodeScannerPermissions();
   }, []);
 
+  async function getProducts(data) {
+    setProducts(await FetchProductsByBarcode(data))
+  }
+
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
-    setModalVisible(true)
+    
+    getProducts(data)
+    console.log(products)    
+       
+
+    if(products.length == 0){
+      setmodal2Visible(true);
+    } else{
+      setmodal1Visible(true);
+    }
+    
+
+   
     //alert(`Bar code with type ${type} and data ${data} has been scanned!`);
   };
 
@@ -29,9 +51,8 @@ export default function Cam() {
   if (hasPermission === false) {
     return <Text>No access to camera</Text>;
   }
-
+  
   return (
-    
     <View style={styles.outsideContainer}>
       <BarCodeScanner
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
@@ -40,28 +61,57 @@ export default function Cam() {
       <BarcodeMask edgeColor={'#53E88B'} width={300} height={100}/>
       {scanned && <Button title={'Tap to Scan Again'} onPress={() =>{ 
         setScanned(false) 
-        setModalVisible(false)
+        setmodal1Visible(false)
+        setmodal2Visible(false)
         }}/>}
+
+
       <Modal
         animationType="slide"
         transparent={true}
-        visible={modalVisible}
+        visible={modal1Visible}
         onRequestClose={() => {
           Alert.alert("Modal has been closed.");
-          setModalVisible(!modalVisible);
+          setmodal1Visible(!modal1Visible);
         }}
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <View style={{width: '100%', marginHorizontal: '50%', flexDirection:'row'}}>
-            <Image style= {{width:60, height: 60, alignItems:'left'}} source={{uri: "https://naturalone.vteximg.com.br/arquivos/ids/156996-1000-1000/suco-de-laranja-integral-180ml-ambiente-natural-one.jpg?v=637971315995030000"}}/>
-            <Text style={styles.modalText}>SUCO DE LARANJA INTEGRAL 180ML AMBIENTE - NATURAL ONE</Text>
+            <Image style= {{width:60, height: 60, alignItems:'left'}} source={{uri: products[0].imagem}}/>
+            <Text style={styles.modalText}>{products[0].nome}</Text>
             <IconButton
                 style={styles.button}
                 icon="plus"
                 color={Colors.white}
                 size={35}
-                onPress={() => setModalVisible(false)}
+                onPress={() => setmodal1Visible(false)}
+              />
+            </View>
+          </View>
+        </View>
+      </Modal>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modal2Visible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          setmodal2Visible(!modal2Visible);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <View style={{width: '100%', marginHorizontal: '50%', flexDirection:'row'}}>
+            <Image style= {{width:60, height: 60, alignItems:'left'}} source={{uri: "https://us.123rf.com/450wm/dzm1try/dzm1try2011/dzm1try201100099/159901749-secret-product-icon-black-box-clipart-image-isolated-on-white-background.jpg?ver=60"}}/>
+            <Text style={styles.modalText}>CADASTRAR PRODUTO</Text>
+            <IconButton
+                style={styles.button}
+                icon="plus"
+                color={Colors.white}
+                size={35}
+                onPress={() => setmodal2Visible(false)}
               />
             </View>
           </View>
