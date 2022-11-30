@@ -3,7 +3,7 @@ import { Text, View, StyleSheet, Button, Modal, Pressable, Image } from 'react-n
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import BarcodeMask from 'react-native-barcode-mask';
 import { IconButton, Colors } from 'react-native-paper';
-import { FetchProductsByBarcode, AddLeitura } from '../../config/Config';
+import { FetchProductsByBarcode, FetchReadings } from '../../config/Config';
 
 export default function Cam() {
   const [hasPermission, setHasPermission] = useState(null);
@@ -13,7 +13,8 @@ export default function Cam() {
   const [hasProducts, setHasProducts] = useState(true);
 
 
-
+  
+  const [idProduct, setIdProduct] = useState(null)
   const [imagem, setImagem] = useState(null)
   const [nome, setNome] = useState(null)
   const [preco, setPreco] = useState(null)
@@ -32,6 +33,7 @@ export default function Cam() {
     try {
 
       const product = await FetchProductsByBarcode(data)
+      setIdProduct(product.id)
       setImagem(product.imagem)
       setNome(product.nome)
       setPreco(product.preco)
@@ -103,7 +105,11 @@ export default function Cam() {
                     size={35}
                     onPress={async() => {
                       setmodalVisible(false)
-                      await AddLeitura()
+                      const timeElapsed = Date.now();
+                      const today = new Date(timeElapsed);
+                      console.log(preco, today.toISOString(),idProduct)
+                      const resp = await FetchReadings(preco, today.toISOString(), idProduct)
+                      console.log(resp)
                     }}
                   />
                   <IconButton

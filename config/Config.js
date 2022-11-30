@@ -1,5 +1,4 @@
-import { GraphQLClient, ClientContext } from 'graphql-hooks'
-import { buildClient } from '@datocms/cma-client-node';
+
 
 async function FetchAllMarkets() {
     const token = 'token';
@@ -105,6 +104,52 @@ async function FetchAllMarketProductsByMarketID(id_Market) {
 }
 
 
+async function FetchReadings(currentPrice, dataTime, idProduct) {
+    const token = 'token';
+    try {
+        const res = await fetch(
+            'https://site-api.datocms.com/items',
+            {
+                method: 'POST',
+                headers: {
+                    'X-Api-Version': 3,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    
+                        "data": {
+                          "type": "item",
+                          "attributes": {
+                            "precoatual": currentPrice,
+                            "datatime": dataTime,
+                            "idproduto": idProduct
+                          },
+                          "relationships": {
+                            "item_type": {
+                              "data": {
+                                "type": "item_type",
+                                "id": "826953"
+                              }
+                            }
+                          }
+                        }          
+        
+                }),
+
+            }
+        )
+        const data = await res.json()
+        
+        
+        return "Data successfully included"
+        
+    } catch (error) {
+        console.log(error);
+        return error
+    }
+}
 async function FetchProductsByBarcode(barcode) {
     console.log("barcode produto = " + barcode)
     const token = 'token';
@@ -148,11 +193,5 @@ async function FetchProductsByBarcode(barcode) {
 
 
 
-async function AddLeitura() {
-    const client = buildClient({ apiToken: 'token' });
-  
-      const records = await client.produtos.list();
-      console.log(records);
-}
 
-export { FetchAllMarkets, FetchProductsByID, FetchAllMarketProductsByMarketID, FetchProductsByBarcode, AddLeitura}
+export { FetchAllMarkets, FetchProductsByID, FetchAllMarketProductsByMarketID, FetchProductsByBarcode, FetchReadings}
