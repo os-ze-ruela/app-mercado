@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, Button, Modal, Pressable, Image} from 'react-native';
+import { Text, View, StyleSheet, Button, Modal, Pressable, Image } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import BarcodeMask from 'react-native-barcode-mask';
 import { IconButton, Colors } from 'react-native-paper';
-import { FetchProductsByBarcode } from '../../config/Config';
+import { FetchProductsByBarcode, AddLeitura } from '../../config/Config';
 
 export default function Cam() {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
-  const [modal1Visible, setmodal1Visible] = useState(false);
-  const [modal2Visible, setmodal2Visible] = useState(false);
-  const test = false
-  
-  const [products, setProducts] = useState([])
+  const [modalVisible, setmodalVisible] = useState(false);
+  //const [modal2Visible, setmodal2Visible] = useState(false);
+  const [hasProducts, setHasProducts] = useState(true);
+
+
+
+  const [imagem, setImagem] = useState(null)
+  const [nome, setNome] = useState(null)
+  const [preco, setPreco] = useState(null)
 
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
@@ -23,25 +27,23 @@ export default function Cam() {
     getBarCodeScannerPermissions();
   }, []);
 
-  async function getProducts(data) {
-    setProducts(await FetchProductsByBarcode(data))
-  }
-
-  const handleBarCodeScanned = ({ type, data }) => {
+  const handleBarCodeScanned = async ({ type, data }) => {
     setScanned(true);
-    
-    getProducts(data)
-    console.log(products)    
-       
+    try {
 
-    if(products.length == 0){
-      setmodal2Visible(true);
-    } else{
-      setmodal1Visible(true);
+      const product = await FetchProductsByBarcode(data)
+      setImagem(product.imagem)
+      setNome(product.nome)
+      setPreco(product.preco)
+      console.log('produto: ', product)
+      setHasProducts(true)
+      setmodalVisible(true)
+    } catch (error) {
+      console.log("Caiu no erro")
+      setHasProducts(false)
+      setmodalVisible(true)
     }
-    
 
-   
     //alert(`Bar code with type ${type} and data ${data} has been scanned!`);
   };
 
@@ -51,74 +53,92 @@ export default function Cam() {
   if (hasPermission === false) {
     return <Text>No access to camera</Text>;
   }
-  
+
   return (
+    
     <View style={styles.outsideContainer}>
+      
       <BarCodeScanner
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         style={StyleSheet.absoluteFillObject}
       />
-      <BarcodeMask edgeColor={'#53E88B'} width={300} height={100}/>
-      {scanned && <Button title={'Tap to Scan Again'} onPress={() =>{ 
-        setScanned(false) 
-        setmodal1Visible(false)
-        setmodal2Visible(false)
-        }}/>}
+      <BarcodeMask edgeColor={'#53E88B'} width={300} height={100} />
+      {scanned && <IconButton
+      style={styles.buttonRetry}
+      icon="reload"
+      color={Colors.white}
+      size={35}
+      onPress={() => {
+        setScanned(false)
+        setmodalVisible(false)
+      }} 
+      />
 
+      }
+      
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              Alert.alert("Modal has been closed.");
+              setmodalVisible(!modalVisible);
+            }}
+          >
 
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modal1Visible}
-        onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
-          setmodal1Visible(!modal1Visible);
-        }}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <View style={{width: '100%', marginHorizontal: '50%', flexDirection:'row'}}>
-            <Image style= {{width:60, height: 60, alignItems:'left'}} source={{uri: products[0].imagem}}/>
-            <Text style={styles.modalText}>{products[0].nome}</Text>
-            <IconButton
-                style={styles.button}
-                icon="plus"
-                color={Colors.white}
-                size={35}
-                onPress={() => setmodal1Visible(false)}
-              />
+          {
+          hasProducts ? (<>
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <View style={{ width: '100%', marginHorizontal: '50%', flexDirection: 'row' }}>
+                  <Image style={{ width: 60, height: 60, alignItems: 'left' }} source={{ uri: imagem }} />
+                  <View>
+                  <Text style={styles.modalText}>{nome}</Text>
+                  <Text style={styles.modalTextPrice}>R$ {preco}</Text>
+                  </View>
+                  <IconButton
+                    style={styles.button}
+                    icon="plus"
+                    color={Colors.white}
+                    size={35}
+                    onPress={async() => {
+                      setmodalVisible(false)
+                      await AddLeitura()
+                    }}
+                  />
+                  <IconButton
+                  style={styles.buttonCloseModal}
+                  icon="close"
+                  color={Colors.black}
+                  size={25}
+                  onPress={() => setmodalVisible(false)}
+                  />
+                </View>
+              </View>
+
             </View>
-          </View>
-        </View>
-      </Modal>
-
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modal2Visible}
-        onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
-          setmodal2Visible(!modal2Visible);
-        }}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <View style={{width: '100%', marginHorizontal: '50%', flexDirection:'row'}}>
-            <Image style= {{width:60, height: 60, alignItems:'left'}} source={{uri: "https://us.123rf.com/450wm/dzm1try/dzm1try2011/dzm1try201100099/159901749-secret-product-icon-black-box-clipart-image-isolated-on-white-background.jpg?ver=60"}}/>
-            <Text style={styles.modalText}>CADASTRAR PRODUTO</Text>
-            <IconButton
-                style={styles.button}
-                icon="plus"
-                color={Colors.white}
-                size={35}
-                onPress={() => setmodal2Visible(false)}
-              />
+        </>) : (<>
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <View style={{ width: '100%', marginHorizontal: '60%', flexDirection: 'row' }}>
+                  <Image style={{ width: 60, height: 60, alignItems: 'left' }} source={{ uri: "https://us.123rf.com/450wm/dzm1try/dzm1try2011/dzm1try201100099/159901749-secret-product-icon-black-box-clipart-image-isolated-on-white-background.jpg?ver=60" }} />
+                  <Text style={styles.modalTextNotFind}>PRODUTO NÃO ENCONTRADO</Text>
+                  <IconButton
+                  style={styles.buttonCloseModal}
+                  icon="close"
+                  color={Colors.black}
+                  size={25}
+                  onPress={() => setmodalVisible(false)}
+                  />
+                </View>
+              </View>
             </View>
-          </View>
-        </View>
-      </Modal>
+        </>)
+        }
+        </Modal>
+
     </View>
-  
+
   );
 }
 
@@ -137,34 +157,34 @@ const styles = StyleSheet.create({
   barCodeBox: {
     alignItems: 'center',
     justifyContent: 'center',
-    height:150,
+    height: 150,
     width: 300,
     overflow: 'hidden',
     borderWidth: 5,
-    borderRadius:30,
-    borderColor:'red',
+    borderRadius: 30,
+    borderColor: 'red',
 
   },
   buttonScan: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor:'#53E88B',
-    borderRadius:30,
-    color:'white'
+    backgroundColor: '#53E88B',
+    borderRadius: 30,
+    color: 'white'
 
   },
   centeredView: {
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
-      marginTop:450
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 450
   },
   modalView: {
     marginTop: 100,
-    width:400,
+    width: 400,
     backgroundColor: "white",
     borderRadius: 20,
-    padding: 25,
+    padding: 20,
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
@@ -176,19 +196,40 @@ const styles = StyleSheet.create({
     elevation: 5
   },
   button: {
-    marginHorizontal:30,
+    marginHorizontal: 20,
     alignSelf: 'right',
     alignItems: 'center',
-    borderRadius: 15,
-    padding: 10,
+    borderRadius: 30,
+    padding: 5,
     elevation: 2,
-    backgroundColor:'#53E88B'
-  },
-  buttonOpen: {
-    backgroundColor: "#F194FF",
+    backgroundColor: '#53E88B'
   },
   buttonClose: {
-    backgroundColor: "#2196F3",
+    marginHorizontal: 10,
+    alignSelf: 'right',
+    alignItems: 'center',
+    borderRadius: 30,
+    padding: 5,
+    elevation: 2,
+    backgroundColor: 'red'
+  },
+  buttonCloseModal: {
+
+    marginHorizontal: -11,
+    marginTop: -21,
+    alignSelf: 'right',
+    alignItems: 'center',
+    borderRadius: 30,
+    padding: 5,
+    elevation: 2,
+    backgroundColor: 'transparent'
+  },
+  buttonRetry: {
+    alignItems: 'center',
+    borderRadius: 30,
+    padding: 10,
+    elevation: 2,
+    backgroundColor: '#53E88B'
   },
   textStyle: {
     color: "white",
@@ -198,7 +239,21 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: "center",
-    width: 200, 
+    width: 200,
+  },
+  modalTextNotFind: {
+    marginTop: 15,
+    textAlign: "center",
+    width: 290,
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+  modalTextPrice: {
+    textAlign: "center",
+    width: 200,
+    fontWeight: "bold",
+    fontSize: 20,
+    color:'#53E88B'
   }
-  
+
 });

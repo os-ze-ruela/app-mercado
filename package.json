@@ -9,9 +9,12 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@datocms/cma-client-browser": "^1.1.10",
+    "@datocms/cma-client-node": "^1.1.10",
     "@expo/webpack-config": "^0.17.2",
     "@react-navigation/bottom-tabs": "^6.4.0",
     "@react-navigation/stack": "^6.3.4",
+    "datocms-client": "^3.5.21",
     "expo": "~47.0.3",
     "expo-barcode-scanner": "~12.0.0",
     "expo-camera": "~13.0.0",
@@ -22,6 +25,7 @@
     "graphql-hooks": "^6.0.5",
     "react": "18.1.0",
     "react-dom": "18.1.0",
+    "react-icons": "^4.7.1",
     "react-native": "0.70.5",
     "react-native-barcode-mask": "^1.2.4",
     "react-native-paper": "^4.12.5",

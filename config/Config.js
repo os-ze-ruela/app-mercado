@@ -1,7 +1,8 @@
-import React from "react"
+import { GraphQLClient, ClientContext } from 'graphql-hooks'
+import { buildClient } from '@datocms/cma-client-node';
 
 async function FetchAllMarkets() {
-    const token = 'da4791d5b3fb6febd5687b6ccca5ad';
+    const token = 'token';
     try {
         const res = await fetch(
             'https://graphql.datocms.com/',
@@ -31,7 +32,7 @@ async function FetchAllMarkets() {
 
 async function FetchProductsByID(id_Product) {
     console.log("id produto = " + id_Product)
-    const token = 'da4791d5b3fb6febd5687b6ccca5ad';
+    const token = 'token';
     try {
         const res = await fetch(
             'https://graphql.datocms.com/',
@@ -66,7 +67,7 @@ async function FetchProductsByID(id_Product) {
 }
 
 async function FetchAllMarketProductsByMarketID(id_Market) {
-    const token = 'da4791d5b3fb6febd5687b6ccca5ad';
+    const token = 'token';
     try {
         const res = await fetch(
             'https://graphql.datocms.com/',
@@ -106,7 +107,7 @@ async function FetchAllMarketProductsByMarketID(id_Market) {
 
 async function FetchProductsByBarcode(barcode) {
     console.log("barcode produto = " + barcode)
-    const token = 'da4791d5b3fb6febd5687b6ccca5ad';
+    const token = 'token';
     try {
         const res = await fetch(
             'https://graphql.datocms.com/',
@@ -121,7 +122,7 @@ async function FetchProductsByBarcode(barcode) {
                     query: `
                     query ListarProdutosByBarcode($barcode: String){
                         allProdutos(filter: { barcode: { eq: $barcode } }) { 
-                             id nome marca barcode imagem}
+                             id nome marca barcode imagem preco}
                     }                
                         `,
                         variables: {
@@ -132,12 +133,26 @@ async function FetchProductsByBarcode(barcode) {
             }
         )
         const data = await res.json()
-        console.log(data.data.allProdutos)
-        return data.data.allProdutos
+        
+        if (data.data.allProdutos == []){
+            throw "Error"
+        }
+        
+        return data.data.allProdutos[0]
+        
     } catch (error) {
         console.log(error);
         return error
     }
 }
 
-export { FetchAllMarkets, FetchProductsByID, FetchAllMarketProductsByMarketID, FetchProductsByBarcode}
+
+
+async function AddLeitura() {
+    const client = buildClient({ apiToken: 'token' });
+  
+      const records = await client.produtos.list();
+      console.log(records);
+}
+
+export { FetchAllMarkets, FetchProductsByID, FetchAllMarketProductsByMarketID, FetchProductsByBarcode, AddLeitura}
