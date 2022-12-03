@@ -1,37 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity, Modal, Image, FlatList } from 'react-native';
 import Product from '../../components/Product';
-import { FetchProductsByID } from '../../config/Config';
 
 
 
-function Products({ route }) {
+function Products({ route, navigation }) {
 
   const marketName = route.params.name
   const products = route.params.products
   const marketImage = route.params.image
-  // const [products, setProducts] = useState([])
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const produtos = await FetchAllProductsById(productsList)
-  //     setProducts(produtos)
-  //   }
-
-  //   fetchData()
-  //     .catch(console.error);
-  // }, [])
-
-
-  // async function FetchAllProductsById(products) {
-  //   let productsList = []
-  //   products.forEach(product => {
-  //     const productJson = await FetchProductsByID(product.idProduto.id)
-  //     productsList.push(productJson)
-  //   });
-  //   return productsList
-  // }
-
 
   console.log("produtos extraidos")
   console.log(products)
@@ -45,7 +22,7 @@ function Products({ route }) {
       <SafeAreaView>
         <FlatList data={products}
           keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item }) => (<Product product={item.idProduto} />)}>
+          renderItem={({ item }) => (<Product product={item.idProduto} navigation={navigation} />)}>
         </FlatList>
       </SafeAreaView>
     </View>

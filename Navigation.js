@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import Cam from './pages/Cam'
 import Products from "./pages/Products";
 import Profile from "./pages/Profile";
+import PriceHistory from "./pages/PriceHistory";
 const Stack = createStackNavigator();
 
 const NavigationHome = () => {
@@ -20,6 +21,10 @@ const NavigationHome = () => {
             <Stack.Screen
             name="Produtos"
             component={Products}
+            />
+            <Stack.Screen
+            name="Leituras"
+            component={PriceHistory}
             />
             <Stack.Screen
             name="Perfil"

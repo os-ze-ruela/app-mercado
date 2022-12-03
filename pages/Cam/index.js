@@ -9,7 +9,6 @@ export default function Cam() {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [modalVisible, setmodalVisible] = useState(false);
-  //const [modal2Visible, setmodal2Visible] = useState(false);
   const [hasProducts, setHasProducts] = useState(true);
 
 
@@ -110,6 +109,7 @@ export default function Cam() {
                       console.log(preco, today.toISOString(),idProduct)
                       const resp = await FetchReadings(preco, today.toISOString(), idProduct)
                       console.log(resp)
+                      alert("Produto cadastrado com sucesso")
                     }}
                   />
                   <IconButton

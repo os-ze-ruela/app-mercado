@@ -6,6 +6,7 @@ import { Button } from "react-native-web";
 class Product extends React.Component{
     render(){
         const {id, nome, marca, barcode, imagem} = this.props.product
+        const navigation = this.props.navigation
         console.log("nome = " + nome)
         return(
             <TouchableOpacity
@@ -18,7 +19,11 @@ class Product extends React.Component{
                 <Text style={{fontWeight: 'bold'}}>{nome}</Text>
                 <Text>{marca}</Text>
                 <Text>{barcode}</Text>
-                <Pressable style={styles.buttonHistory}>
+                <Pressable 
+                style={styles.buttonHistory} 
+                onPress={()=>{
+                  navigation.navigate('Leituras', { name:nome, image:imagem})
+                }}>
                     <Text style={styles.textButton}>Histórico de Preço</Text>
                 </Pressable>
                 </View>
