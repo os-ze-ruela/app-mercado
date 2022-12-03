@@ -1,7 +1,7 @@
 
 
 async function FetchAllMarkets() {
-    const token = 'da4791d5b3fb6febd5687b6ccca5ad';
+    const token = 'token';
     try {
         const res = await fetch(
             'https://graphql.datocms.com/',
@@ -31,7 +31,7 @@ async function FetchAllMarkets() {
 
 async function FetchProductsByID(id_Product) {
     console.log("id produto = " + id_Product)
-    const token = 'da4791d5b3fb6febd5687b6ccca5ad';
+    const token = 'token';
     try {
         const res = await fetch(
             'https://graphql.datocms.com/',
@@ -66,7 +66,7 @@ async function FetchProductsByID(id_Product) {
 }
 
 async function FetchAllMarketProductsByMarketID(id_Market) {
-    const token = 'da4791d5b3fb6febd5687b6ccca5ad';
+    const token = 'token';
     try {
         const res = await fetch(
             'https://graphql.datocms.com/',
@@ -105,7 +105,7 @@ async function FetchAllMarketProductsByMarketID(id_Market) {
 
 
 async function FetchReadings(currentPrice, dataTime, idProduct) {
-    const token = 'da4791d5b3fb6febd5687b6ccca5ad';
+    const token = 'token';
     try {
         const res = await fetch(
             'https://site-api.datocms.com/items',
@@ -152,7 +152,7 @@ async function FetchReadings(currentPrice, dataTime, idProduct) {
 }
 async function FetchProductsByBarcode(barcode) {
     console.log("barcode produto = " + barcode)
-    const token = 'da4791d5b3fb6febd5687b6ccca5ad';
+    const token = 'token';
     try {
         const res = await fetch(
             'https://graphql.datocms.com/',
