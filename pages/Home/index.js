@@ -1,27 +1,15 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useContext } from "react"
 import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity, Modal, Image, FlatList } from 'react-native';
 import Market from "../../components/Market"
-import {FetchAllMarkets} from "../../config/Config";
+import { MarketContext } from "../../Context/MarketContext";
 
 
 export default function Home({ navigation }) {
 
 
-
-  const [markets, setMarkets] = useState([])
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const mercados = await FetchAllMarkets()
-      setMarkets(mercados)
-    }
-
-    fetchData()
-      .catch(console.error);
-  }, [])
-
+  const { markets } = useContext(MarketContext)
+  
   return (
-
     <View style={styles.container}>
       <SafeAreaView>
         <FlatList data={markets}
@@ -31,7 +19,6 @@ export default function Home({ navigation }) {
         </FlatList>
       </SafeAreaView>
     </View>
-
   )
 }
 

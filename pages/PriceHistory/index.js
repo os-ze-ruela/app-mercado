@@ -1,33 +1,58 @@
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity, Modal, Image, FlatList } from 'react-native';
 import Reading from '../../components/Reading';
+import { FetchReadingsByIdProduct, DeleteReadings} from '../../config/Config';
 
-const readings = [
-    {date: '10/05/2022', price: '3.14'},
-    {date: '20/06/2022', price: '20.56'},
-    {date: '30/04/2022', price: '23.05'},
-    {date: '14/08/2022', price: '14.06'},
-    {date: '25/09/2022', price: '26.02'},
-  ];
 
-console.log(readings)
+
+// const readings = [
+//     {date: '10/05/2022', price: '3.14'},
+//     {date: '20/06/2022', price: '20.56'},
+//     {date: '30/04/2022', price: '23.05'},
+//     {date: '14/08/2022', price: '14.06'},
+//     {date: '25/09/2022', price: '26.02'},
+//   ];
+
 
 
 function PriceHistory({ route }) {
 
   const productName = route.params.name
   const productImage = route.params.image
-  const [lists, setLists] = useState(readings);
 
-  const deleteItem = (index) => {
-    const arr = [...lists];
+  const [readings, setReadings] = useState([])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const leituras = await FetchReadingsByIdProduct()
+      setReadings(leituras)
+    }
+    
+    fetchData()
+    .catch(console.error);
+  }, [])
+  
+
+
+  // const [lists, setLists] = useState(readings);
+
+  const deleteItem = async (item, index) => {
+    console.log("ITEM AQUI")
+    console.log(item)
+    const resp = await DeleteReadings(item.id)
+    if(resp == "Item deleted successfully"){
+      console.log(resp)
+    }
+    else{
+      console.log("Fail to deleted item")
+    }
+    
+    const arr = [...readings];
     arr.splice(index, 1);
-    setLists(arr);
+    setReadings(arr);
   };
 
-  console.log("Fetch Readings")
-  //Fetch Readings 
-
+// console.log(lists)
   return (
     <View style={styles.container}>
       <View style={{width: '100%', marginHorizontal: '80%', flexDirection:'row', backgroundColor:'white', paddingTop:70}}>
@@ -35,8 +60,8 @@ function PriceHistory({ route }) {
         <Text style={styles.textTitle}>{productName}</Text>
       </View>
       <SafeAreaView>
-        <FlatList data={lists}
-          renderItem={({ item, index }) => (<Reading reading={item} handleDelete={() => deleteItem(index)}/>)}>
+        <FlatList data={readings}
+          renderItem={({ item, index }) => (<Reading reading={item} handleDelete={() => deleteItem(item, index)}/>)}>
         </FlatList>
       </SafeAreaView>
     </View>
