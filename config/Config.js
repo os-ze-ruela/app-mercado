@@ -1,8 +1,9 @@
 
+const token = 'token';
+
 
 async function FetchAllMarkets() {
     console.log("hora de buscar mercados")
-    const token = 'token';
     try {
         const res = await fetch(
             'https://graphql.datocms.com/',
@@ -32,7 +33,6 @@ async function FetchAllMarkets() {
 
 async function FetchProductsByID(id_Product) {
     console.log("id produto = " + id_Product)
-    const token = 'token';
     try {
         const res = await fetch(
             'https://graphql.datocms.com/',
@@ -67,7 +67,6 @@ async function FetchProductsByID(id_Product) {
 }
 
 async function FetchAllMarketProductsByMarketID(id_Market) {
-    const token = 'token';
     try {
         const res = await fetch(
             'https://graphql.datocms.com/',
@@ -97,7 +96,8 @@ async function FetchAllMarketProductsByMarketID(id_Market) {
         )
         const data = await res.json()
         console.log(data.data)
-        if (data.data.allMercadoProdutos == []){
+        console.log("tamanho = ", data.data.allMercadoProdutos.length)
+        if (data.data.allMercadoProdutos.length <= 0){
             throw "Error"
         }
         
@@ -111,7 +111,6 @@ async function FetchAllMarketProductsByMarketID(id_Market) {
 
 
 async function FetchReadings(currentPrice, dataTime, idProduct) {
-    const token = 'token';
     try {
         const res = await fetch(
             'https://site-api.datocms.com/items',
@@ -159,7 +158,6 @@ async function FetchReadings(currentPrice, dataTime, idProduct) {
 }
 
 async function PublishReadings(idProduct) {
-    const token = 'token';
     try {
         const res = await fetch(
             `https://site-api.datocms.com/items/${idProduct}/publish?recursive=true`,
@@ -183,8 +181,6 @@ async function PublishReadings(idProduct) {
     }
 }
 async function DeleteReadings(idProduct) {
-    console.log("ITEM ID = " + idProduct)
-    const token = 'token';
     try {
         const res = await fetch(
             `https://site-api.datocms.com/items/${idProduct}`,
@@ -209,8 +205,6 @@ async function DeleteReadings(idProduct) {
 }
 
 async function FetchProductsByBarcode(barcode, idMarket) {
-    console.log("barcode produto = " + barcode)
-    const token = 'token';
     try {
         const res = await fetch(
             'https://graphql.datocms.com/',
@@ -251,7 +245,6 @@ async function FetchProductsByBarcode(barcode, idMarket) {
 }
 
 async function FetchReadingsByIdProduct(id_Product) {
-    const token = 'token';
     try {
         const res = await fetch(
             'https://graphql.datocms.com/',
