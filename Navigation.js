@@ -3,7 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Home from './pages/Home';
 import Cam from './pages/Cam'
 import Products from "./pages/Products";
-import Profile from "./pages/Profile";
+import ProfileTab from "./pages/ProfileTab"
 import PriceHistory from "./pages/PriceHistory";
 const Stack = createStackNavigator();
 
@@ -28,7 +28,7 @@ const NavigationHome = () => {
             />
             <Stack.Screen
             name="Perfil"
-            component={Profile}
+            component={ProfileTab}
             />
         </Stack.Navigator>
 
@@ -47,7 +47,7 @@ const NavigationCam = () => {
             />
             <Stack.Screen
             name="Perfil"
-            component={Profile}
+            component={ProfileTab}
             />
         </Stack.Navigator>
 
@@ -58,7 +58,7 @@ const NavigationProfile = () => {
         <Stack.Navigator>
             <Stack.Screen
             name="Perfil"
-            component={Profile}
+            component={ProfileTab}
             />
             <Stack.Screen
             name="Escolha seu Mercado"

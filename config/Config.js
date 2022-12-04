@@ -96,7 +96,7 @@ async function FetchAllMarketProductsByMarketID(id_Market) {
             }
         )
         const data = await res.json()
-        console.log(data.data.allMercadoProdutos == [])
+        console.log(data.data)
         if (data.data.allMercadoProdutos == []){
             throw "Error"
         }
