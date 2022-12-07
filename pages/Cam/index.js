@@ -157,7 +157,7 @@ export default function Cam() {
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
                 <View style={{ width: '100%', marginHorizontal: '50%', flexDirection: 'row' }}>
-                  <Image style={{ width: 60, height: 60, alignItems: 'left' }} source={{ uri: imagem }} />
+                  <Image style={{ width: 60, height: 60}} source={{ uri: imagem }} />
                   <View>
                     <Text style={styles.modalText}>{nome}</Text>
                     <Text style={styles.modalTextPrice}>R$ {preco}</Text>
@@ -200,7 +200,7 @@ export default function Cam() {
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
                 <View style={{ width: '100%', marginHorizontal: '60%', flexDirection: 'row' }}>
-                  <Image style={{ width: 60, height: 60, alignItems: 'left' }} source={{ uri: "https://us.123rf.com/450wm/dzm1try/dzm1try2011/dzm1try201100099/159901749-secret-product-icon-black-box-clipart-image-isolated-on-white-background.jpg?ver=60" }} />
+                  <Image style={{ width: 60, height: 60 }} source={{ uri: "https://us.123rf.com/450wm/dzm1try/dzm1try2011/dzm1try201100099/159901749-secret-product-icon-black-box-clipart-image-isolated-on-white-background.jpg?ver=60" }} />
                   <Text style={styles.modalTextNotFind}>PRODUTO NÃO ENCONTRADO</Text>
                   <IconButton
                     style={styles.buttonCloseModal}
@@ -277,7 +277,6 @@ const styles = StyleSheet.create({
   },
   button: {
     marginHorizontal: 20,
-    alignSelf: 'right',
     alignItems: 'center',
     borderRadius: 30,
     padding: 5,
@@ -286,7 +285,6 @@ const styles = StyleSheet.create({
   },
   buttonClose: {
     marginHorizontal: 10,
-    alignSelf: 'right',
     alignItems: 'center',
     borderRadius: 30,
     padding: 5,
@@ -297,7 +295,6 @@ const styles = StyleSheet.create({
 
     marginHorizontal: -11,
     marginTop: -21,
-    alignSelf: 'right',
     alignItems: 'center',
     borderRadius: 30,
     padding: 5,

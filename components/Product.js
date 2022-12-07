@@ -14,7 +14,7 @@ class Product extends React.Component{
 
               >
             <View style={{width: '100%', marginHorizontal: '50%', flexDirection:'row'}}>
-                <Image style= {{width:150, height: 150, alignItems:'left'}} source={{uri: imagem}}/>
+                <Image style= {{width:150, height: 150}} source={{uri: imagem}}/>
                 <View style={{textAlign: 'center', width: '60%'}}>
                 <Text style={{fontWeight: 'bold'}}>{nome}</Text>
                 <Text>{marca}</Text>
@@ -22,7 +22,7 @@ class Product extends React.Component{
                 <Pressable 
                 style={styles.buttonHistory} 
                 onPress={()=>{
-                  navigation.navigate('Leituras', { name:nome, image:imagem})
+                  navigation.navigate('Leituras', { id: id, name:nome, image:imagem})
                 }}>
                     <Text style={styles.textButton}>Histórico de Preço</Text>
                 </Pressable>

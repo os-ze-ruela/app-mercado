@@ -19,12 +19,13 @@ function PriceHistory({ route }) {
 
   const productName = route.params.name
   const productImage = route.params.image
+  const productId = route.params.id
 
   const [readings, setReadings] = useState([])
 
   useEffect(() => {
     const fetchData = async () => {
-      const leituras = await FetchReadingsByIdProduct()
+      const leituras = await FetchReadingsByIdProduct(productId)
       setReadings(leituras)
     }
     

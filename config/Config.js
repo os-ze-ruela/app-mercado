@@ -1,5 +1,5 @@
 
-const token = 'token';
+const token = 'da4791d5b3fb6febd5687b6ccca5ad';
 
 
 async function FetchAllMarkets() {

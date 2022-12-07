@@ -1,21 +1,22 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import {
   SafeAreaView,
   StyleSheet,
   Text,
   View,
   TouchableOpacity,
-  TextInput,
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { TextInput } from 'react-native-paper';
 
 import * as Animatable from "react-native-animatable";
 import { UserContext } from "../../Context/UserContext";
 
 export default function Login() {
   const { login } = useContext(UserContext);
+  const [passwordVisible, setPasswordVisible] = useState(true);
 
   return (
     <View style={styles.container}>
@@ -30,12 +31,15 @@ export default function Login() {
       <Animatable.View animation="fadeInUp" style={styles.containerForm}>
         <Text style={styles.title}>Email ou apelido</Text>
         <TextInput
+          activeUnderlineColor={"#53E88B"}
           placeholder="Digite seu email ou apelido..."
           style={styles.input}
         />
 
         <Text style={styles.title}>Senha</Text>
-        <TextInput placeholder="Digite sua senha..." style={styles.input} />
+        <TextInput  activeUnderlineColor={"#53E88B"} secureTextEntry={passwordVisible} 
+        right={<TextInput.Icon name={passwordVisible ? "eye-off" : "eye"} 
+        onPress={() => setPasswordVisible(!passwordVisible)} />} placeholder="Digite sua senha..." style={styles.input} />
 
         <TouchableOpacity style={styles.button} onPress={() => {login()}}>
           <Text tyle={styles.buttonText}>Acessar</Text>
@@ -83,6 +87,7 @@ const styles = StyleSheet.create({
     height: 40,
     marginBottom: 12,
     fontSize: 16,
+    backgroundColor: "transparent"
   },
   button: {
     borderColor: "#53E88B",

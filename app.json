@@ -4,7 +4,7 @@
     "slug": "projeto04",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/helpprice.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -18,16 +18,23 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.pedropauletti.projeto04"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/helpprice.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.pedropauletti.projeto04"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "1723aec7-9f77-4c12-9c36-d0866b2e9a1e"
+      }
     }
   }
 }

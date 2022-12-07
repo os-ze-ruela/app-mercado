@@ -16,7 +16,7 @@ function Products({ route, navigation }) {
   return (
     <View style={styles.container}>
       <View style={{width: '100%', marginHorizontal: '50%', flexDirection:'row', backgroundColor:'white', paddingTop:40}}>
-        <Image style= {{width:50, height: 50, alignItems:'left'}} source={{uri: marketImage}}/>
+        <Image style= {{width:50, height: 50, alignItems:'center'}} source={{uri: marketImage}}/>
         <Text style={styles.textTitle}>Lista de Produtos do Mercado {marketName}</Text>
       </View>
       <SafeAreaView>
